@@ -1,5 +1,4 @@
-
-
+import os
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
@@ -17,4 +16,5 @@ def predict():
     return jsonify({"error": "Invalid input"}), 400
 
 if __name__ == '__main__':
-    app.run(host="127.0.0.1", port=5000)
+    port = int(os.environ.get("PORT", 5000))  # On récupère le port depuis l'environnement
+    app.run(host="0.0.0.0", port=port)  # 0.0.0.0 permet d'accepter les connexions externes
