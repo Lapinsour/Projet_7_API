@@ -11,7 +11,8 @@ def predict():
         return jsonify({"error": "No data received"}), 400
     
     if "value" in data and isinstance(data["value"], (int, float)):
-        return jsonify({"result": data["value"] > 0})
+        result = "valeur positive" if data["value"] > 0 else "valeur négative"
+        return jsonify({"result": result})
 
     return jsonify({"error": "Invalid input"}), 400
 
