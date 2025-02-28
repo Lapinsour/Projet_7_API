@@ -1,40 +1,42 @@
 import os
 import pickle
-import numpy as np
-import pandas as pd
 from flask import Flask, request, jsonify
 
 # Charger le modèle
-MODEL_PATH = "best_model.pkl"  # Chemin de ton modèle
-with open(MODEL_PATH, "rb") as file:
-    model = pickle.load(file)  # Charger le modèle LightGBM
+MODEL_PATH = "best_model.pkl"
+if os.path.exists(MODEL_PATH):
+    with open(MODEL_PATH, "rb") as f:
+        model = pickle.load(f)
+else:
+    model = None  # Evite que l'API crashe si le modèle est absent
 
 app = Flask(__name__)
 
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
-        data = request.get_json()  # Récupérer les données JSON envoyées
+        data = request.get_json()
+        print("🚀 Données reçues:", data)  # Log des données reçues
 
         if not data:
             return jsonify({"error": "No data received"}), 400
 
-        # Transformer en DataFrame
-        df = pd.DataFrame([data])  
+        # Vérifie que le modèle est chargé
+        if model is None:
+            return jsonify({"error": "Model not found"}), 500
 
-        # Remplacer NaN et valeurs infinies
-        df.replace([np.nan, np.inf, -np.inf], 0, inplace=True)
+        # Convertir les données en DataFrame si besoin (pandas)
+        import pandas as pd
+        df = pd.DataFrame([data])
 
-        # Vérifier que le nombre de colonnes est correct
-        if df.shape[1] != model.n_features_in_:
-            return jsonify({"error": f"Expected {model.n_features_in_} features, but got {df.shape[1]}"}), 400
+        # Prédiction
+        prediction = model.predict(df)
+        print("🎯 Prédiction:", prediction.tolist())  # Log des prédictions
 
-        # Faire la prédiction
-        prediction = model.predict(df)[0]  # Prendre la première valeur
-
-        return jsonify({"prediction": float(prediction)})  # Convertir en JSON-safe format
+        return jsonify({"prediction": prediction.tolist()})
 
     except Exception as e:
+        print("❌ Erreur:", str(e))  # Log des erreurs
         return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
