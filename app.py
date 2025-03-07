@@ -13,35 +13,33 @@ else:
 
 app = Flask(__name__)
 
-@app.route('/predict', methods=['POST']) #L'API attend une requête POSTE à son url/predict. 
+
 
 def predict_model(data) : 
-            # Convertir les données en DataFrame si besoin (pandas)
-            import pandas as pd
-            df = pd.DataFrame([data]) #Les données sont converties en df pandas parce que c'est ce qu'attend le modèle. 
-    
+            # Convertir les données en DataFrame si besoin (pandas)            
+            df = pd.DataFrame([data]) #Les données sont converties en df pandas parce que c'est ce qu'attend le modèle.     
             # Prédiction
             prediction = model.predict(df)
             print("Prédiction:", prediction.tolist())  # Log des prédictions
-    
-            return jsonify({"prediction": prediction.tolist()})
-
             if model is None:
                 return jsonify({"error": "Model not found"}), 500
+            else :
+                return prediction.tolist()
+
+            
+
+
+@app.route('/predict', methods=['POST']) #L'API attend une requête POSTE à son url/predict. 
 
 
 def predict(): #Lorsqu'elle reçoit une requête POST, l'API renvoie le résultat de la fonction predict().
     try:
-        data = request.get_json() #Les données reçues sont en json.
-        
+        data = request.get_json() #Les données reçues sont en json.       
 
         if not data:
-            return jsonify({"error": "No data received"}), 400
-
-        
-        
-        predict_model(data)
-            
+            return jsonify({"error": "No data received"}), 400      
+                
+        return jsonify({"prediction": predict_model(data)})
 
     except Exception as e:
         
