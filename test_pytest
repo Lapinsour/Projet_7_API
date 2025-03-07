@@ -1,0 +1,7 @@
+import pytest
+from app.py import predict_model
+
+def test_predict_model():
+    #ici prendre une ligne quelconque du df 
+    result = predict_model(data)
+    assert result <= 1 and result >= 0
