@@ -38,8 +38,8 @@ def predict(): #Lorsqu'elle reçoit une requête POST, l'API renvoie le résulta
 
         if not data:
             return jsonify({"error": "No data received"}), 400      
-                
-        return jsonify({"prediction": predict_model(data)})
+        else :        
+            return jsonify({"prediction": predict_model(data)})
 
     except Exception as e:
         
