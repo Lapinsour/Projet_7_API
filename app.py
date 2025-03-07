@@ -1,6 +1,7 @@
 import os
 import pickle
 from flask import Flask, request, jsonify
+import pandas as pd
 
 # Charger le modèle
 MODEL_PATH = "best_model.pkl"
