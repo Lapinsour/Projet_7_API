@@ -12,10 +12,10 @@ else:
 
 app = Flask(__name__)
 
-@app.route('/predict', methods=['POST'])
-def predict():
+@app.route('/predict', methods=['POST']) #L'API attend une requête POSTE à son url/predict. 
+def predict(): #Lorsqu'elle reçoit une requête POST, l'API renvoie le résultat de la fonction predict().
     try:
-        data = request.get_json()
+        data = request.get_json() #Les données reçues sont en json.
         print("🚀 Données reçues:", data)  # Log des données reçues
 
         if not data:
@@ -27,7 +27,7 @@ def predict():
 
         # Convertir les données en DataFrame si besoin (pandas)
         import pandas as pd
-        df = pd.DataFrame([data])
+        df = pd.DataFrame([data]) #Les données sont converties en df pandas parce que c'est ce qu'attend le modèle. 
 
         # Prédiction
         prediction = model.predict(df)
