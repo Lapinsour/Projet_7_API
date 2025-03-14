@@ -15,5 +15,5 @@ def load_random_data():
 def test_predict_model():
     data = load_random_data()  # Récupérer une ligne aléatoire du CSV
     result = predict_model(data)
-    result = int(result)
+    result = int(result[0])
     assert 0 <= result <= 1
