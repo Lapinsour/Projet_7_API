@@ -58,7 +58,7 @@ jobs:
           pip install pytest
 
       - name: Run tests
-        run: pytest test_pytest
+        run: pytest test_pytest.py
 
   deploy:
     permissions:
