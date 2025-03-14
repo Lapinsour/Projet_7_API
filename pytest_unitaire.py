@@ -4,7 +4,7 @@ import requests
 from app import predict_model
 
 # URL brute du fichier CSV sur GitHub 
-GITHUB_CSV_URL = "https://github.com/Lapinsour/Projet_7_API/blob/main/df_sample.csv"
+GITHUB_CSV_URL = "https://raw.githubusercontent.com/Lapinsour/Projet_7_API/main/path/to/df_sample.csv"
 
 def load_random_data():    
     df = pd.read_csv(GITHUB_CSV_URL)
