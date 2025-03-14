@@ -1,5 +1,5 @@
 import pytest
-from app.py import predict_model
+from app import predict_model
 
 def test_predict_model():
     #ici prendre une ligne quelconque du df 
