@@ -41,24 +41,24 @@ jobs:
             .
             !venv/
   test:
-  name: Run Pytest
-  runs-on: ubuntu-latest
-  steps:
-    - name: Checkout repo
-      uses: actions/checkout@v3
+    name: Run Pytest
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.9'
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
 
-    - name: Install dependencies
-      run: |
-        pip install -r requirements.txt
-        pip install pytest
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install pytest
 
-    - name: Run tests
-      run: pytest test_pytest.py 
+      - name: Run tests
+        run: pytest test_pytest.py 
 
   deploy:
     permissions:
