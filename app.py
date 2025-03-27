@@ -3,7 +3,7 @@ import pickle
 from flask import Flask, request, jsonify
 import pandas as pd
 
-# Charger le modèle
+
 MODEL_PATH = "model.pkl"
 if os.path.exists(MODEL_PATH):
     with open(MODEL_PATH, "rb") as f:
