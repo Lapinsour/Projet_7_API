@@ -32,17 +32,43 @@ def predict_model(data) :
 @app.route('/predict', methods=['POST']) #L'API attend une requête POSTE à son url/predict. 
 
 
-def predict(): #Lorsqu'elle reçoit une requête POST, l'API renvoie le résultat de la fonction predict().
+def predict():
     try:
-        data = request.get_json() #Les données reçues sont en json.       
+        data = request.get_json()
 
         if not data:
-            return jsonify({"error": "No data received"}), 400      
-                
-        return jsonify({"prediction": predict_model(data)})
+            return jsonify({"error": "No data received"}), 400
+
+        client_id = data.get("client_id")
+
+        if not client_id:
+            return jsonify({"error": "Missing client_id"}), 400
+
+        # 🔎 On récupère les données du client dans le df_sample
+        client_data = df_sample[df_sample["client_id"] == client_id]
+
+        if client_data.empty:
+            return jsonify({"error": f"Client ID {client_id} not found"}), 404
+
+        # 🧹 Suppression des colonnes non utilisées
+        client_data = client_data.drop([
+            "client_id",  # identifiant
+            "TARGET", 
+            "NAME_FAMILY_STATUS_Unknown", 
+            "NAME_INCOME_TYPE_Maternity_leave"
+        ], axis=1, errors="ignore")  # errors="ignore" si parfois absentes
+
+        # 🧠 Prédiction avec le modèle
+        prediction = model.predict(client_data)[0]
+        probability = model.predict_proba(client_data)[0][1]
+
+        # ✅ Retour du résultat
+        return jsonify({
+            "prediction": int(prediction),
+            "probability": float(probability)
+        })
 
     except Exception as e:
-        
         return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
