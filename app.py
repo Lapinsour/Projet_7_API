@@ -45,13 +45,13 @@ def predict():
             return jsonify({"error": "client_id is missing"}), 400
 
         # 🔎 On récupère les données du client
-        client_data = df_sample[df_sample["client_id"] == client_id]
+        client_data = df_sample[df_sample['SK_ID_CURR'] == client_id]
 
         if client_data.empty:
             return jsonify({"error": "Client not found"}), 404
 
         # 🚫 Supprimer 'client_id' avant la prédiction
-        client_data = client_data.drop(['client_id'], axis=1, errors='ignore')
+        client_data = client_data.drop(['SK_ID_CURR'], axis=1, errors='ignore')
 
         # 🤖 Faire la prédiction
         prediction = model.predict_proba(client_data)[0]
