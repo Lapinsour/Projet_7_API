@@ -5,7 +5,7 @@ import pandas as pd
 
 # Charger le modèle
 
-MODEL_PATH = "model.pkl"
+MODEL_PATH = "model20.pkl"
 if os.path.exists(MODEL_PATH):
     with open(MODEL_PATH, "rb") as f:
         model = pickle.load(f)
