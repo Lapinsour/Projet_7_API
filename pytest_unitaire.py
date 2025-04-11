@@ -14,6 +14,8 @@ def load_random_data():
 
 def test_predict_model():
     data = load_random_data()  # Récupérer une ligne aléatoire du CSV
+    print(f"Nb features envoyées à l'API : {len(data)}")
+    print(f"Noms des features : {list(data.keys())}")
     result = predict_model(data)
     result = int(result[0])
     assert 0 <= result <= 1
