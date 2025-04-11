@@ -18,7 +18,8 @@ app = Flask(__name__)
 
 def predict_model(data) : 
             # Convertir les données en DataFrame si besoin (pandas)            
-            df = pd.DataFrame([data]) #Les données sont converties en df pandas parce que c'est ce qu'attend le modèle.     
+            df = pd.DataFrame([data]) #Les données sont converties en df pandas parce que c'est ce qu'attend le modèle.
+            df = df.drop(["SK_ID_CURR", "Unnamed: 0"], axis=1)
             # Prédiction
             prediction = model.predict(df)
             print("Prédiction:", prediction.tolist())  # Log des prédictions
